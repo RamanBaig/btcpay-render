@@ -10,10 +10,12 @@ services:
       minInstances: 1
       maxInstances: 1
     envVars:
+      - key: PORT
+        value: "10000"
       - key: BTCPAY_NETWORK
         value: mainnet
       - key: BTCPAY_BIND
-        value: 0.0.0.0:8080
+        value: 0.0.0.0:${PORT}
       - key: BTCPAY_ROOTPATH
         value: /
       - key: BTCPAY_HTTPS
@@ -58,7 +60,16 @@ services:
         sync: false
       - key: BTCPAY_COOKIEFILEPATH
         value: "/tmp/cookie"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: btcpay-db
+          property: connectionString
+      - key: PGDATABASE
+        fromDatabase:
+          name: btcpay-db
+          property: database
 
 databases:
   - name: btcpay-db
     plan: free
+    ipAllowList: []  # optional if you want to allow all IPs

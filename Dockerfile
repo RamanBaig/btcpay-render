@@ -16,8 +16,8 @@ RUN chmod +x start.sh \
     && apt-get install -y postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
+ENV ASPNETCORE_URLS=http://+:${PORT}
+EXPOSE ${PORT}
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD [ -f /tmp/healthy ] || exit 1
 
