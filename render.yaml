@@ -42,6 +42,14 @@ services:
         fromDatabase:
           name: btcpay-db
           property: password
+      - key: PGHOST
+        fromDatabase:
+          name: btcpay-db
+          property: host
+      - key: PGPORT
+        value: "5432"
+      - key: PGSSLMODE
+        value: "require"
       - key: BTCPAY_ADMIN_USERNAME
         sync: false
       - key: BTCPAY_ADMIN_PASSWORD
