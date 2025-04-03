@@ -1,0 +1,56 @@
+services:
+  - type: web
+    name: btcpayserver
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: false
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+    envVars:
+      - key: BTCPAY_NETWORK
+        value: mainnet
+      - key: BTCPAY_BIND
+        value: 0.0.0.0:8080
+      - key: BTCPAY_ROOTPATH
+        value: /
+      - key: BTCPAY_HTTPS
+        value: "true"
+      - key: BTCPAY_SECURITY_HEADERRESPONSE
+        value: "true"
+      - key: ASPNETCORE_ENVIRONMENT
+        value: "Production"
+      - key: DOTNET_RUNNING_IN_CONTAINER
+        value: "true"
+      - key: DOTNET_GCHeapHardLimit
+        value: "268435456"  # 256MB
+      - key: POSTGRES_HOST
+        fromDatabase:
+          name: btcpay-db
+          property: host
+      - key: POSTGRES_DB
+        fromDatabase:
+          name: btcpay-db
+          property: database
+      - key: POSTGRES_USER
+        fromDatabase:
+          name: btcpay-db
+          property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+          name: btcpay-db
+          property: password
+      - key: BTCPAY_ADMIN_USERNAME
+        sync: false
+      - key: BTCPAY_ADMIN_PASSWORD
+        sync: false
+      - key: BTCPAY_ADMIN_EMAIL
+        sync: false
+      - key: BTCPAY_COOKIEFILEPATH
+        value: "/tmp/cookie"
+
+databases:
+  - name: btcpay-db
+    plan: free
