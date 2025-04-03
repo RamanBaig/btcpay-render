@@ -10,12 +10,14 @@ services:
       minInstances: 1
       maxInstances: 1
     envVars:
-      - key: PORT
-        value: "10000"
       - key: BTCPAY_NETWORK
         value: mainnet
       - key: BTCPAY_BIND
-        value: 0.0.0.0:${PORT}
+        value: "0.0.0.0:3000"
+      - key: ASPNETCORE_URLS
+        value: "http://+:3000"
+      - key: PORT
+        value: "3000"
       - key: BTCPAY_ROOTPATH
         value: /
       - key: BTCPAY_HTTPS
@@ -28,30 +30,8 @@ services:
         value: "true"
       - key: DOTNET_GCHeapHardLimit
         value: "268435456"  # 256MB
-      - key: POSTGRES_HOST
-        fromDatabase:
-          name: btcpay-db
-          property: host
-      - key: POSTGRES_DB
-        fromDatabase:
-          name: btcpay-db
-          property: database
-      - key: POSTGRES_USER
-        fromDatabase:
-          name: btcpay-db
-          property: user
-      - key: POSTGRES_PASSWORD
-        fromDatabase:
-          name: btcpay-db
-          property: password
-      - key: PGHOST
-        fromDatabase:
-          name: btcpay-db
-          property: host
-      - key: PGPORT
-        value: "5432"
-      - key: PGSSLMODE
-        value: "require"
+      - key: POSTGRES_CONNECTIONSTRING
+        sync: false  # Set this in Render dashboard using Neon.tech connection string
       - key: BTCPAY_ADMIN_USERNAME
         sync: false
       - key: BTCPAY_ADMIN_PASSWORD
@@ -60,16 +40,3 @@ services:
         sync: false
       - key: BTCPAY_COOKIEFILEPATH
         value: "/tmp/cookie"
-      - key: DATABASE_URL
-        fromDatabase:
-          name: btcpay-db
-          property: connectionString
-      - key: PGDATABASE
-        fromDatabase:
-          name: btcpay-db
-          property: database
-
-databases:
-  - name: btcpay-db
-    plan: free
-    ipAllowList: []  # optional if you want to allow all IPs
